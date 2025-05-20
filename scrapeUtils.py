@@ -38,7 +38,7 @@ def read_urls(file: str = "urls.txt") -> str:
 
 def download_file(url: str, path: str) -> bool:
     try:
-        response = requests.get(url, stream=True)
+        response = requests.get(url, headers={ "User-Agent": "Mozilla/5.0" }, stream=True)
         response.raise_for_status()
         
         with open(path, 'wb') as file, tqdm(

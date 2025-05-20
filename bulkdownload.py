@@ -7,7 +7,7 @@ parser = argparse.ArgumentParser(description="Allows you to easily download medi
 
 parser.add_argument("--out", "-o", type=str, help="The output directory where downloaded media will be saved. (Default='./download')")
 parser.add_argument("--urls", "-uf", type=str, help="Specify a file of urls to download.")
-parser.add_argument("--url", "-u", type=str, help="Specify a single url to download")
+parser.add_argument("--url", "-u", action="append", type=str, help="Specify a single url to download")
 
 args = parser.parse_args()
 
@@ -15,12 +15,11 @@ out = args.out
 if not out:
     out = "."
 
-urls = []
-if args.url:
-    urls = [ args.url ]
-elif args.urls:
+def default(a, b): return a if a else b
+urls = default(args.url, [])
+if args.urls:
     urls = su.read_urls(args.urls)
-else:
+elif len(urls) == 0:
     urls = [line.strip() for line in sys.stdin if line.strip()]
 
 
@@ -28,4 +27,4 @@ urls = [ u.split("] ")[1:][0] if u.startswith("[") else u for u in urls ]
 
 su.download_bulk(urls, out)
 
-subprocess.call(["nautilus", "."])
+subprocess.call(["nautilus", out])
