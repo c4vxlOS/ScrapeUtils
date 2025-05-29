@@ -12,17 +12,17 @@ cd /usr/bin/scraper/sh/
 
 sudo tee bulkdownload.sh <<EOF
 # !/bin/bash
-python /usr/bin/scraper/bulkdownload.py "\$@"
+python3 /usr/bin/scraper/bulkdownload.py "\$@"
 EOF
 
 sudo tee scrape.sh <<EOF
 # !/bin/bash
-python /usr/bin/scraper/scrape.py "\$@"
+python3 /usr/bin/scraper/scrape.py "\$@"
 EOF
 
 sudo tee base64convert.sh <<EOF
 # !/bin/bash
-python /usr/bin/scraper/base64convert.py "\$@"
+python3 /usr/bin/scraper/base64convert.py "\$@"
 EOF
 
 sudo tee uninstall.sh <<EOF
