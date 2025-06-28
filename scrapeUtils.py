@@ -58,9 +58,14 @@ def download_file(url: str, path: str) -> bool:
 
 def download_bulk(urls: list[str], out_dir: str = "download", cooldown = 0):
     os.makedirs(out_dir, exist_ok=True)
-
     for url in urls:
-        success = download_file(url, os.path.join(out_dir, os.path.basename(url).split("?")[0].split(":")[0].split(";")[0][:255]))
+        subdirs = url.split("] ")[0].removeprefix("[").split(";") if url.__contains__("] ") else []
+        subpath = "/".join(subdirs)
+        dir = os.path.join(out_dir, subpath)
+        os.makedirs(dir, exist_ok=True)
+        url = "] ".join(url.split("] ")[1:])
+
+        success = download_file(url, os.path.join(dir, os.path.basename(url).split("?")[0].split(":")[0].split(";")[0][:255]))
 
         if success:
             print(f"Successfully downloaded {url}.")

@@ -8,6 +8,7 @@ parser = argparse.ArgumentParser(description="Allows you to easily download medi
 parser.add_argument("--out", "-o", type=str, help="The output directory where downloaded media will be saved. (Default='./download')")
 parser.add_argument("--urls", "-uf", type=str, help="Specify a file of urls to download.")
 parser.add_argument("--url", "-u", action="append", type=str, help="Specify a single url to download")
+parser.add_argument("--timeout", "-t", type=int, help="Specify the timeout between multiple downloads [ms]")
 
 args = parser.parse_args()
 
@@ -22,9 +23,8 @@ if args.urls:
 elif len(urls) == 0:
     urls = [line.strip() for line in sys.stdin if line.strip()]
 
+timeout = default(args.timeout, 0)
 
-urls = [ u.split("] ")[1:][0] if u.startswith("[") else u for u in urls ]
-
-su.download_bulk(urls, out)
+su.download_bulk(urls, out, timeout)
 
 subprocess.call(["nautilus", out])
